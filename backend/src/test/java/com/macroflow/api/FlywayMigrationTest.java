@@ -3,6 +3,7 @@ package com.macroflow.api;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -28,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * environments without a Docker daemon), so it never blocks the build.
  */
 @Testcontainers(disabledWithoutDocker = true)
+@ActiveProfiles("test")  // provides JWT/USDA stubs so context starts without real env vars
 @SpringBootTest
 class FlywayMigrationTest {
 
