@@ -1,0 +1,11 @@
+com/macroflow/api/MacroFlowApiApplicationTests.class
+com/macroflow/service/MealServicePropertyTest.class
+com/macroflow/service/FoodSearchServiceTest.class
+com/macroflow/service/AnalyticsServicePropertyTest.class
+com/macroflow/api/FlywayMigrationTest.class
+com/macroflow/api/UserControllerTest.class
+com/macroflow/api/AuthControllerTest.class
+com/macroflow/api/MealEntryControllerTest.class
+com/macroflow/api/AnalyticsControllerTest.class
+com/macroflow/util/MacroUtilsPropertyTest.class
+com/macroflow/api/UserPreferencesControllerTest.class

@@ -1,0 +1,28 @@
+{
+  "enabled": true,
+  "name": "Generate Steering Rules",
+  "description": "Listens to source code file changes and analyzes modified code for potential improvements including code smells, design patterns, and best practices. Generates suggestions for readability, maintainability, and performance optimizations.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.py",
+      "**/*.java",
+      "**/*.go",
+      "**/*.rs",
+      "**/*.cpp",
+      "**/*.c",
+      "**/*.cs",
+      "**/*.swift",
+      "**/*.kt"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the recently modified source code file for potential improvements. Look for code smells, opportunities to apply design patterns, and best practices violations. Generate specific, actionable suggestions to improve code quality while maintaining existing functionality. Focus on: readability (naming, structure, comments), maintainability (modularity, coupling, cohesion), and performance optimizations. Present findings clearly with before/after examples where helpful."
+  }
+}

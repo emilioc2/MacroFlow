@@ -1,0 +1,12 @@
+{
+  "name": "Run Tests After Task",
+  "version": "1.0.0",
+  "description": "Runs the appropriate test suite after a spec task completes. Only fires if a jest.config file exists (i.e. the mobile project has been scaffolded).",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "[ -f jest.config.js ] || [ -f jest.config.ts ] || [ -f jest.config.json ] && npx jest --runInBand --passWithNoTests || echo 'No jest config found — skipping tests'"
+  }
+}

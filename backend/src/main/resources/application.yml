@@ -1,0 +1,91 @@
+spring:
+  application:
+    name: macroflow-api
+
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      # Sized for free-tier PostgreSQL (Neon/Supabase cap ~20 connections)
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 20000   # 20s — fail fast rather than queue indefinitely
+      idle-timeout: 300000        # 5 min
+      max-lifetime: 1200000       # 20 min — rotate before server-side timeout
+
+  jackson:
+    # Serialise java.time types as ISO-8601 strings, not arrays (e.g. "1990-06-15" not [1990,6,15])
+    serialization:
+      write-dates-as-timestamps: false
+
+  jpa:
+    hibernate:
+      # validate: Flyway owns the schema; Hibernate must never alter it
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false           # prevent lazy-loading across HTTP boundary
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 25          # batch inserts/updates for sync batch endpoint
+        order_inserts: true
+        order_updates: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    # baseline-on-migrate false: migrations start from V1 on a fresh DB
+    baseline-on-migrate: false
+
+# App-level config — all sensitive values from environment variables
+app:
+  jwt:
+    secret: ${JWT_SECRET}                   # min 256-bit base64-encoded secret
+    access-token-expiry-seconds: 900        # 15 minutes (short-lived; held in memory only)
+    refresh-token-expiry-seconds: 2592000   # 30 days (stored in expo-secure-store)
+  usda:
+    api-key: ${USDA_API_KEY}               # USDA FoodData Central API key; never hardcoded
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info
+      base-path: /actuator
+  endpoint:
+    health:
+      # Only show full health details to authenticated callers (e.g. ops dashboards)
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: macroflow-api
+      environment: ${ENVIRONMENT:local}
+
+server:
+  # PORT env var used by Cloud Run / Fly.io / Render; defaults to 8080 locally
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+    mime-types: application/json
+    min-response-size: 1024
+
+sentry:
+  # DSN supplied via environment variable — never hardcoded
+  dsn: ${SENTRY_DSN:}
+  minimum-event-level: warn
+  traces-sample-rate: 0.1
+  environment: ${ENVIRONMENT:local}
+
+logging:
+  level:
+    root: INFO
+    com.macroflow: INFO
+  pattern:
+    # Structured JSON — includes traceId and opaque userId for traceability without PII
+    console: '{"timestamp":"%d{ISO8601}","level":"%p","logger":"%logger{36}","traceId":"%X{traceId:-}","userId":"%X{userId:-}","message":"%msg"}%n'

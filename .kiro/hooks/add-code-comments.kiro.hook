@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Add Code Comments",
+  "description": "Reminds the agent to add meaningful comments when writing frontend (TypeScript/React Native) and backend (Java/Spring Boot) code",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": [
+      "write"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before writing this code, ensure you include meaningful comments:\n- For TypeScript/React Native files (.ts, .tsx): add JSDoc comments on exported functions, hooks, components, and types; inline comments for non-obvious logic\n- For Java/Spring Boot files (.java): add Javadoc on public classes, methods, and controllers; inline comments for complex business logic\n- Comments should explain *why*, not just *what*\n- Keep comments concise and accurate — remove any that are redundant or state the obvious"
+  }
+}

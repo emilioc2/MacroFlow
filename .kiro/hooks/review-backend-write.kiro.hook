@@ -1,0 +1,13 @@
+{
+  "name": "Review Backend Code Write",
+  "version": "1.0.0",
+  "description": "Before writing a Java file, checks it follows Spring Boot conventions",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": ["write"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before writing this Java file, verify it follows MacroFlow backend conventions:\n- Controllers are thin — no business logic, only validation and delegation to services\n- JPA entities are never returned directly from controllers — always map to DTOs\n- No hardcoded secrets or credentials\n- No System.out.println — use structured logging (SLF4J/Logback)\n- DTOs use Bean Validation annotations (@Valid, @NotNull, etc.)\n- Any new DB schema change has a corresponding Flyway migration, not ddl-auto\n- Ownership checks are enforced in the service layer\nIf the file is not a backend Java file, skip these checks and proceed."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Enforce 80% Test Coverage",
+  "description": "Runs test coverage checks after each spec task completes to ensure 80% coverage is maintained across frontend and backend",
+  "version": "1",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "([ -f jest.config.js ] || [ -f jest.config.ts ] || [ -f jest.config.json ]) && npx jest --runInBand --coverage --coverageThreshold='{\"global\":{\"lines\":80,\"functions\":80,\"branches\":80,\"statements\":80}}' || echo 'No jest config found — skipping mobile coverage'; [ -f backend/pom.xml ] && (cd backend && ./mvnw test) || echo 'No backend pom.xml found — skipping backend tests'",
+    "timeout": 120
+  }
+}

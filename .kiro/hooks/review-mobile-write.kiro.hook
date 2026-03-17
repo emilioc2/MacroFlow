@@ -1,0 +1,13 @@
+{
+  "name": "Review Mobile Code Write",
+  "version": "1.0.0",
+  "description": "Before writing a TS/TSX file, checks it follows project conventions",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": ["write"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Before writing this file, verify it follows MacroFlow mobile conventions:\n- No inline styles (use StyleSheet.create)\n- No direct SQLite or API calls in components — route through db/ or services/\n- No `any` types without an explanatory comment\n- Screens are thin orchestrators; logic lives in hooks or utils\n- Loading and error states are handled in the UI\n- Zustand stores are not mutated directly\nIf the file is not a mobile source file, skip these checks and proceed."
+  }
+}

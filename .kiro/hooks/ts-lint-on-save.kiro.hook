@@ -1,0 +1,13 @@
+{
+  "name": "Lint & Type Check on Save",
+  "version": "1.0.0",
+  "description": "Runs ESLint and TypeScript type check when a TS/TSX file is saved",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["**/*.ts", "**/*.tsx"]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npx tsc --noEmit && npx eslint --ext .ts,.tsx src/"
+  }
+}

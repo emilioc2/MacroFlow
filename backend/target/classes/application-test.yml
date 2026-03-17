@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    # H2 in-memory DB so tests run without a real PostgreSQL instance
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      # create-drop: H2 schema is managed by Hibernate in tests (no Flyway)
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+  flyway:
+    # Flyway disabled in tests — H2 ddl-auto handles schema creation
+    enabled: false
+
+# Test-only JWT config — a fixed secret long enough for HS256 (min 32 chars)
+app:
+  jwt:
+    secret: test-secret-key-for-unit-tests-only-not-production
+    access-token-expiry-seconds: 900
+    refresh-token-expiry-seconds: 2592000
+  usda:
+    api-key: test-usda-key
